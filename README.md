@@ -62,7 +62,7 @@ A fast-paced 2D alien shooter built with **Blazor WebAssembly** and **C#**. Run 
 > **Pre-requisites:** [.NET 7 or later](https://dotnet.microsoft.com/en-us/download)
 
 ```bash
-git clone https://github.com/your-username/blazor-space-shooter.git
+git clone https://github.com/ali0248513/Space-Shooter-Blazor.git
 cd blazor-space-shooter
 dotnet run
 ````
