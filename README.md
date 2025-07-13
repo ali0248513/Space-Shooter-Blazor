@@ -109,6 +109,5 @@ Feel free to fork, improve, or suggest features via issues and pull requests!
 ## 🙌 Acknowledgements
 
 * [Blazor Team @ Microsoft](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
-* [OpenAI ChatGPT](https://chat.openai.com/) – for architecture brainstorming
-
+* [OpenAI ChatGPT](https://chat.openai.com/) – for brainstorming architectur
 ---
