@@ -1,0 +1,2051 @@
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = true;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+
+
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+        _ = UpdateGameLoop();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+        }
+
+        // Check for alien bounce
+        if (aliens.Any(a => a.X + 50 >= GameWidth) || aliens.Any(a => a.X <= 0))
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any())
+        {
+            NextLevel();
+        }
+
+        StateHasChanged();  // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            return;
+        }
+
+        alienSpeed += 0.5;
+        alienFireProbability += 0.005;
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await gameDiv.FocusAsync();
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+}
+
+
+<audio id="background-music" autoplay loop>
+    <source src="~/BgMusic.mp3" type="audio/mpeg">
+</audio>
+
+
+
+
+<div style="position:absolute; top:10px; left:10px; color:white;">Score: @score | Level: @level</div>
+
+<div class="game-container">
+    <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+        <svg width="1300" height="600">
+            <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+            @foreach (var alien in aliens)
+            {
+                <image href="alien.bmp" x="@alien.X" y="@alien.Y" width="50" height="50" />
+            }
+
+            <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+            @foreach (var bullet in player.Bullets)
+            {
+                <rect x="@bullet.X" y="@bullet.Y" width="5" height="10" style="fill:red;" />
+            }
+            @foreach (var bullet in alienBullets)
+            {
+                <rect x="@bullet.X" y="@bullet.Y" width="5" height="10" style="fill:blue;" />
+            }
+        </svg>
+    </div>
+    <div style="position:absolute; top:10px; left:10px; color:white;">Score: @score | Level: @level</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2
+
+
+
+
+
+
+
+
+
+
+
+
+
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+        }
+
+        // Check for alien bounce
+        if (aliens.Any(a => a.X + 50 >= GameWidth) || aliens.Any(a => a.X <= 0))
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any())
+        {
+            NextLevel();
+        }
+
+        StateHasChanged();  // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            return;
+        }
+
+        alienSpeed += 0.5;
+        alienFireProbability += 0.005;
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false;
+    }
+
+    private void ShowLeaderBoard()
+    {
+        // Implement leader board logic here
+    }
+
+    private void ExitGame()
+    {
+        // Implement exit logic here
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+
+        // Use JavaScript to control the audio element
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+}
+
+@if (!gameStarted)
+{
+    <div class="menu">
+        <button @onclick="StartGame">Start</button>
+        <button @onclick="ShowLeaderBoard">Leader Board</button>
+        <button @onclick="ExitGame">Exit</button>
+        <!-- Play/Pause Music Button -->
+        <button @onclick="ToggleMusic">Play/Pause Music</button>
+    </div>
+}
+else
+{
+    <div style="position:absolute; top:10px; left:10px; color:white;">Score: @score | Level: @level</div>
+
+    <div class="game-container">
+        <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+            <svg width="1300" height="600">
+                <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+                @foreach (var alien in aliens)
+                {
+                    <image href="alien.bmp" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                }
+
+                <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                @foreach (var bullet in player.Bullets)
+                {
+                    <rect x="@bullet.X" y="@bullet.Y" width="5" height="10" style="fill:red;" />
+                }
+                @foreach (var bullet in alienBullets)
+                {
+                    <rect x="@bullet.X" y="@bullet.Y" width="5" height="10" style="fill:blue;" />
+                }
+            </svg>
+        </div>
+    </div>
+}
+
+<audio id="backgroundMusic" loop>
+    <source src="BgMusic.mp3" type="audio/mp3" />
+    Your browser does not support the audio element.
+</audio>
+
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+        .menu button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+        }
+</style>
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+        }
+
+        // Check for alien bounce
+        if (aliens.Any(a => a.X + 50 >= GameWidth) || aliens.Any(a => a.X <= 0))
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any())
+        {
+            NextLevel();
+        }
+
+        StateHasChanged();  // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            return;
+        }
+
+        // Increase difficulty: faster aliens and more frequent firing
+        alienSpeed += 0.5;
+        alienFireProbability += 0.005;
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false;
+    }
+
+    private void ShowLeaderBoard()
+    {
+        // Implement leader board logic here
+    }
+
+    private void ExitGame()
+    {
+        // Implement exit logic here
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+
+        // Use JavaScript to control the audio element
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+}
+
+@if (!gameStarted)
+{
+    <div class="menu">
+        <button @onclick="StartGame">Start</button>
+        <button @onclick="ShowLeaderBoard">Leader Board</button>
+        <button @onclick="ExitGame">Exit</button>
+        <!-- Play/Pause Music Button -->
+        <button @onclick="ToggleMusic">Play/Pause Music</button>
+    </div>
+}
+else
+{
+    <div style="position:absolute; top:10px; left:10px; color:white;">Score: @score | Level: @level</div>
+
+    <div class="game-container">
+        <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+            <svg width="1300" height="600">
+                <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+                @foreach (var alien in aliens)
+                {
+                    <image href="alien.bmp" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                }
+
+                <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                @foreach (var bullet in player.Bullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="yellow" />
+                }
+                @foreach (var bullet in alienBullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="red" />
+                }
+            </svg>
+        </div>
+    </div>
+}
+
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+        .menu button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+        }
+
+            .menu button:hover {
+                background-color: #555;
+            }
+
+    .game-container {
+        position: relative;
+    }
+</style>
+
+
+
+
+
+
+
+4
+
+
+
+
+
+
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+
+        alienBullets.Clear();
+        player.Bullets.Clear();
+        moveLeft = false;
+        moveRight = false;
+        fire = false;
+        aliensMovingRight = true; // Reset alien movement direction
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        bool reverseDirection = false;
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+
+            // Check if an alien hits the boundary
+            if (alien.X + 50 >= GameWidth || alien.X <= 0)
+            {
+                reverseDirection = true;
+            }
+        }
+
+        // Reverse direction and move down
+        if (reverseDirection)
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+
+                // End game if aliens reach the player
+                if (alien.Y + 50 >= player.Y)
+                {
+                    gameRunning = false;
+                    return;
+                }
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any() && gameRunning)
+        {
+            NextLevel();
+        }
+
+        StateHasChanged();  // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            gameStarted = false;
+            return;
+        }
+
+        // Increase difficulty
+        alienSpeed = Math.Min(alienSpeed + 0.5, 10); // Cap speed increase
+        alienFireProbability = Math.Min(alienFireProbability + 0.005, 0.05); // Cap probability
+
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false;
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+}
+
+@if (!gameStarted)
+{
+    <div class="menu">
+        <button @onclick="StartGame">Start</button>
+        <button @onclick="PauseGame">Pause</button>
+        <button @onclick="ToggleMusic">Play/Pause Music</button>
+    </div>
+}
+else
+{
+    <div style="position:absolute; top:10px; left:10px; color:white;">Score: @score | Level: @level</div>
+
+    <div class="game-container">
+        <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+            <svg width="1300" height="600">
+                <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+                @foreach (var alien in aliens)
+                {
+                    <image href="alien.bmp" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                }
+
+                <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                @foreach (var bullet in player.Bullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="yellow" />
+                }
+                @foreach (var bullet in alienBullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="red" />
+                }
+            </svg>
+        </div>
+    </div>
+}
+
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .menu button {
+        margin: 10px;
+        padding: 15px 30px;
+			background-color: limegreen;
+    }
+
+</style>
+
+
+
+
+
+
+5
+
+
+
+
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+
+        alienBullets.Clear();
+        player.Bullets.Clear();
+        moveLeft = false;
+        moveRight = false;
+        fire = false;
+        aliensMovingRight = true; // Reset alien movement direction
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        bool reverseDirection = false;
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+
+            // Check if an alien hits the boundary
+            if (alien.X + 50 >= GameWidth || alien.X <= 0)
+            {
+                reverseDirection = true;
+            }
+        }
+
+        // Reverse direction and move down
+        if (reverseDirection)
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+
+                // End game if aliens reach the player
+                if (alien.Y + 50 >= player.Y)
+                {
+                    gameRunning = false;
+                    return;
+                }
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any() && gameRunning)
+        {
+            NextLevel();
+        }
+
+        StateHasChanged(); // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            gameStarted = false;
+            return;
+        }
+
+        // Increase difficulty
+        alienSpeed = Math.Min(alienSpeed + 1.0, 12); // Increase speed faster and raise cap
+        alienFireProbability = Math.Min(alienFireProbability + 0.02, 0.1); // Cap probability
+
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false; // Show menu
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+}
+
+@if (!gameStarted)
+{
+    <div class="menu">
+        <button @onclick="StartGame">Start</button>
+        <button @onclick="ToggleMusic">Play/Pause Music</button>
+    </div>
+}
+else
+{
+    <div class="game-container">
+        <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+            <svg width="1300" height="600">
+                <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+                @foreach (var alien in aliens)
+                {
+                    <image href="alien_no_bg.png" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                }
+
+                <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                @foreach (var bullet in player.Bullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="yellow" />
+                }
+                @foreach (var bullet in alienBullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="red" />
+                }
+            </svg>
+        </div>
+    </div>
+
+    <!-- Display Score and Level at the bottom center -->
+    <div class="score-level-container">
+        <span>Score: @score | Level: @level</span>
+    </div>
+}
+
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+        .menu button {
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: limegreen;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+            .menu button:hover {
+                background-color: darkgreen;
+            }
+
+    .game-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .score-level-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 18px;
+        font-family: 'Press Start 2P', cursive;
+    }
+</style>
+
+
+
+
+
+
+
+6
+
+
+
+@page "/"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+
+    protected override void OnInitialized()
+    {
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+
+        alienBullets.Clear();
+        player.Bullets.Clear();
+        moveLeft = false;
+        moveRight = false;
+        fire = false;
+        aliensMovingRight = true; // Reset alien movement direction
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16); // Roughly 60 FPS
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = 600; // Initial position
+        public int Y { get; set; } = 550; // Fixed position at the bottom
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        bool reverseDirection = false;
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+
+            // Check if an alien hits the boundary
+            if (alien.X + 50 >= GameWidth || alien.X <= 0)
+            {
+                reverseDirection = true;
+            }
+        }
+
+        // Reverse direction and move down
+        if (reverseDirection)
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+
+                // End game if aliens reach the player
+                if (alien.Y + 50 >= player.Y)
+                {
+                    gameRunning = false;
+                    return;
+                }
+            }
+        }
+
+        // Move player bullets
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        // Move alien bullets
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        // Handle collisions
+        CheckCollisions();
+
+        // Check if level is complete
+        if (!aliens.Any() && gameRunning)
+        {
+            NextLevel();
+        }
+
+        StateHasChanged(); // Ensure the UI is updated
+    }
+
+    private void CheckCollisions()
+    {
+        // Player bullets vs aliens
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        // Alien bullets vs player
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            gameStarted = false;
+            return;
+        }
+
+        // Increase difficulty
+        alienSpeed = Math.Min(alienSpeed + 1.0, 12); // Increase speed faster and raise cap
+        alienFireProbability = Math.Min(alienFireProbability + 0.02, 0.1); // Cap probability
+
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false; // Show menu
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+}
+
+@if (!gameStarted)
+{
+    <div class="menu">
+        <button @onclick="StartGame">Start</button>
+        <button @onclick="ToggleMusic">Play/Pause Music</button>
+    </div>
+}
+else
+{
+    <div class="game-container">
+        <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+            <svg width="1300" height="600">
+                <image href="bg3.jpg" x="0" y="0" width="1300" height="600" />
+                @foreach (var alien in aliens)
+                {
+                    <image href="alien_no_bg.png" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                }
+
+                <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                @foreach (var bullet in player.Bullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="yellow" />
+                }
+                @foreach (var bullet in alienBullets)
+                {
+                    <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="red" />
+                }
+            </svg>
+        </div>
+    </div>
+
+    <!-- Display Score and Level at the bottom center -->
+    <div class="score-level-container">
+        <span>Score: @score | Level: @level</span>
+    </div>
+}
+
+<style>
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+        .menu button {
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: limegreen;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+            .menu button:hover {
+                background-color: darkgreen;
+            }
+
+    .game-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .score-level-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 18px;
+        font-family: 'Press Start 2P', cursive;
+    }
+</style>
+

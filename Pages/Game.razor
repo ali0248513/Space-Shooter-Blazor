@@ -1,0 +1,453 @@
+﻿@page "/Game"
+
+@using System.Linq
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+@code {
+    private List<Alien> aliens = new List<Alien>();
+    private Player player = new Player();
+    private List<Bullet> alienBullets = new List<Bullet>();
+    private bool gameRunning = false;
+    private bool aliensMovingRight = true;
+    private const int GameWidth = 1300;
+    private const int GameHeight = 600;
+    private bool moveLeft, moveRight, fire;
+    private Random random = new Random();
+    private int score = 0;
+    private int level = 1;
+    private double alienSpeed = 2;
+    private double alienFireProbability = 0.01;
+    private ElementReference gameDiv;
+    private bool gameStarted = false;
+    private bool isMusicPlaying = false;
+    private string userName = string.Empty;
+    private string gameOverMessage = string.Empty;
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private string pageAnimationClass = ""; // Controls the animation class
+
+    private void NavigateToHomePage()
+    {
+        pageAnimationClass = "fade-out";
+        StateHasChanged();
+        Task.Delay(300).ContinueWith(_ => NavigationManager.NavigateTo("/"));
+    }
+
+    protected override void OnInitialized()
+    {
+        pageAnimationClass = "fade-in-up"; // Default animation when the page loads
+        InitializeGame();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && gameStarted)
+        {
+            await FocusGameDiv();
+        }
+    }
+
+    private void InitializeGame()
+    {
+        aliens.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                aliens.Add(new Alien { X = i * 70, Y = j * 50 });
+            }
+        }
+
+        alienBullets.Clear();
+        player.Bullets.Clear();
+        moveLeft = false;
+        moveRight = false;
+        fire = false;
+        aliensMovingRight = true;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateGameLoop()
+    {
+        while (gameRunning)
+        {
+            UpdateGame();
+            AlienFire();
+            await Task.Delay(16);
+        }
+    }
+
+    public class Alien
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Bullet
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    public class Player
+    {
+        public int X { get; set; } = GameWidth / 2;
+        public int Y { get; set; } = GameHeight - 50;
+        public List<Bullet> Bullets { get; set; } = new List<Bullet>();
+    }
+
+    private void UpdateGame()
+    {
+        if (!gameRunning) return;
+
+        // Move player
+        if (moveLeft)
+        {
+            player.X = Math.Max(player.X - 5, 0);
+        }
+        if (moveRight)
+        {
+            player.X = Math.Min(player.X + 5, GameWidth - 50);
+        }
+
+        // Move aliens
+        bool reverseDirection = false;
+        foreach (var alien in aliens)
+        {
+            alien.X += aliensMovingRight ? (int)alienSpeed : -(int)alienSpeed;
+
+            if (alien.X + 50 >= GameWidth || alien.X <= 0)
+            {
+                reverseDirection = true;
+            }
+        }
+
+        if (reverseDirection)
+        {
+            aliensMovingRight = !aliensMovingRight;
+            foreach (var alien in aliens)
+            {
+                alien.Y += 10;
+
+                if (alien.Y + 50 >= player.Y)
+                {
+                    gameRunning = false;
+                    SaveScoreToLocalStorage();
+                    gameStarted = false;
+                    gameOverMessage = "Game Over!";
+                    return;
+                }
+            }
+        }
+
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            bullet.Y -= 5;
+            if (bullet.Y < 0)
+            {
+                player.Bullets.Remove(bullet);
+            }
+        }
+
+        foreach (var bullet in alienBullets.ToList())
+        {
+            bullet.Y += 5;
+            if (bullet.Y > GameHeight)
+            {
+                alienBullets.Remove(bullet);
+            }
+        }
+
+        CheckCollisions();
+
+        if (!aliens.Any() && gameRunning)
+        {
+            NextLevel();
+        }
+
+        StateHasChanged();
+    }
+
+    private void CheckCollisions()
+    {
+        foreach (var bullet in player.Bullets.ToList())
+        {
+            foreach (var alien in aliens.ToList())
+            {
+                if (bullet.X > alien.X && bullet.X < alien.X + 50 &&
+                    bullet.Y > alien.Y && bullet.Y < alien.Y + 50)
+                {
+                    aliens.Remove(alien);
+                    player.Bullets.Remove(bullet);
+                    score += 10;
+                    break;
+                }
+            }
+        }
+
+        foreach (var bullet in alienBullets.ToList())
+        {
+            if (bullet.X > player.X && bullet.X < player.X + 50 &&
+                bullet.Y > player.Y && bullet.Y < player.Y + 50)
+            {
+                gameRunning = false;
+                gameStarted = false;
+                gameOverMessage = "You Died!";
+                SaveScoreToLocalStorage();
+                StateHasChanged();
+                break;
+            }
+        }
+    }
+
+    private void AlienFire()
+    {
+        if (aliens.Any() && random.NextDouble() < alienFireProbability)
+        {
+            var firingAlien = aliens[random.Next(aliens.Count)];
+            alienBullets.Add(new Bullet { X = firingAlien.X + 25, Y = firingAlien.Y + 50 });
+        }
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        if (level > 10)
+        {
+            gameRunning = false;
+            gameStarted = false;
+            gameOverMessage = "Finished!";
+            SaveScoreToLocalStorage();
+            StateHasChanged();
+            return;
+        }
+
+        alienSpeed = Math.Min(alienSpeed + 1.0, 12);
+        alienFireProbability = Math.Min(alienFireProbability + 0.02, 0.1);
+
+        InitializeGame();
+    }
+
+    private async Task FocusGameDiv()
+    {
+        await JSRuntime.InvokeVoidAsync("focusElement", gameDiv);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = true;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = true;
+        }
+        else if (e.Key == " ")
+        {
+            fire = true;
+            player.Bullets.Add(new Bullet { X = player.X + 22, Y = player.Y - 10 });
+        }
+        else if (e.Key == "Escape")
+        {
+            PauseGame();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "a" || e.Key == "A")
+        {
+            moveLeft = false;
+        }
+        else if (e.Key == "d" || e.Key == "D")
+        {
+            moveRight = false;
+        }
+    }
+
+    private void StartGame()
+    {
+        gameStarted = true;
+        gameRunning = true;
+        _ = UpdateGameLoop();
+    }
+
+    private void PauseGame()
+    {
+        gameRunning = false;
+        gameStarted = false;
+    }
+
+    private async Task ToggleMusic()
+    {
+        var action = isMusicPlaying ? "pause" : "play";
+        isMusicPlaying = !isMusicPlaying;
+        await JSRuntime.InvokeVoidAsync("toggleMusic", action);
+    }
+
+    private async Task SaveScoreToLocalStorage()
+    {
+        var previousScores = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "scores");
+        var scores = string.IsNullOrEmpty(previousScores) ? new List<string>() : previousScores.Split(',').ToList();
+        scores.Add($"{userName}: {score}");
+
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "scores", string.Join(",", scores));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserNameFromLocalStorage();
+        StartGame();
+    }
+
+    private async Task LoadUserNameFromLocalStorage()
+    {
+        userName = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userName");
+    }
+
+    private void GoToScoresPage()
+    {
+        NavigationManager.NavigateTo("/Scores");
+    }
+
+    private void RestartGame()
+    {
+        score = 0;
+        level = 1;
+        alienSpeed = 2;
+        alienFireProbability = 0.01;
+        aliens.Clear();
+        player.X = GameWidth / 2;
+        player.Y = GameHeight - 50;
+        player.Bullets.Clear();
+        alienBullets.Clear();
+        aliensMovingRight = true;
+        gameRunning = true;
+        gameStarted = true;
+        gameOverMessage = string.Empty;
+        InitializeGame();
+        _ = UpdateGameLoop();
+    }
+}
+
+
+
+
+@if (!gameStarted)
+{
+    <div class="page-container @pageAnimationClass">
+        <div class="shooting-stars">
+            <!-- Multiple star divs with randomized effects -->
+            <div class="star" style="top: 10%; left: 90%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+            <div class="star" style="top: 15%; left: 85%; animation-duration: 2.8s; animation-delay: 1s;"></div>
+            <div class="star" style="top: 30%; left: 80%; animation-duration: 2.2s; animation-delay: 0s;"></div>
+            <div class="star" style="top: 45%; left: 75%; animation-duration: 3.5s; animation-delay: 1.2s;"></div>
+            <div class="star" style="top: 55%; left: 70%; animation-duration: 3s; animation-delay: 2s;"></div>
+            <div class="star" style="top: 70%; left: 65%; animation-duration: 2.7s; animation-delay: 1.5s;"></div>
+            <div class="star" style="top: 80%; left: 60%; animation-duration: 2.4s; animation-delay: 1.8s;"></div>
+            <div class="star" style="top: 90%; left: 50%; animation-duration: 2.9s; animation-delay: 0.8s;"></div>
+            <div class="star" style="top: 40%; left: 55%; animation-duration: 3.2s; animation-delay: 2.4s;"></div>
+            <div class="star" style="top: 65%; left: 40%; animation-duration: 3.3s; animation-delay: 1.3s;"></div>
+            <div class="star" style="top: 10%; left: 15%; animation-duration: 3s;"></div>
+            <div class="star" style="top: 20%; left: 40%; animation-duration: 2.5s;"></div>
+            <div class="star" style="top: 50%; left: 70%; animation-duration: 4s;"></div>
+            <div class="star" style="top: 80%; left: 10%; animation-duration: 2s;"></div>
+            <div class="star" style="top: 60%; left: 30%; animation-duration: 3s;"></div>
+            <div class="star" style="top: 15%; left: 90%; animation-duration: 2s;"></div>
+            <!-- Add more stars as needed -->
+        </div>
+
+        <!-- Fixed Blinking Stars -->
+        <div class="fixed-star" style="top: 15%; left: 20%; animation-duration: 2s;"></div>
+        <div class="fixed-star" style="top: 30%; left: 30%; animation-duration: 2.5s;"></div>
+        <div class="fixed-star" style="top: 50%; left: 10%; animation-duration: 3s;"></div>
+        <div class="fixed-star" style="top: 65%; left: 45%; animation-duration: 2.3s;"></div>
+        <div class="fixed-star" style="top: 80%; left: 75%; animation-duration: 2s;"></div>
+        <div class="fixed-star" style="top: 25%; left: 60%; animation-duration: 1.8s;"></div>
+        <div class="fixed-star" style="top: 40%; left: 85%; animation-duration: 3.2s;"></div>
+        <div class="fixed-star" style="top: 10%; left: 50%; animation-duration: 3.5s;"></div>
+        <div class="fixed-star" style="top: 55%; left: 15%; animation-duration: 2.7s;"></div>
+        <div class="fixed-star" style="top: 75%; left: 55%; animation-duration: 3s;"></div>
+        <div class="fixed-star" style="top: 20%; left: 80%; animation-duration: 2.2s;"></div>
+        <div class="fixed-star" style="top: 10%; left: 25%; animation-duration: 2.9s;"></div>
+        <div class="fixed-star" style="top: 60%; left: 40%; animation-duration: 2.6s;"></div>
+        <div class="fixed-star" style="top: 50%; left: 70%; animation-duration: 2.4s;"></div>
+        <div class="fixed-star" style="top: 70%; left: 20%; animation-duration: 3.1s;"></div>
+        <div class="menu">
+            <button @onclick="StartGame" style="text-align: center; font-family: 'Press Start 2P', cursive;">Start</button>
+            <button @onclick="ToggleMusic" style="text-align: center; font-family: 'Press Start 2P', cursive;">Play/Pause Music</button>
+            <button @onclick="GoToScoresPage" style="text-align: center; font-family: 'Press Start 2P', cursive;">Leader Board</button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="page-container @pageAnimationClass">
+
+        <div class="game-container">
+            <!-- Game area -->
+            <div @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" tabindex="0" style="outline:none;" @ref="gameDiv">
+                <svg width="1300" height="600">
+                    <image href="/bg3.jpg" x="0" y="0" width="1300" height="600" />
+                    @foreach (var alien in aliens)
+                    {
+                        <image href="alien_no_bg.png" x="@alien.X" y="@alien.Y" width="50" height="50" />
+                    }
+
+                    <image href="ship2.png" x="@player.X" y="@player.Y" width="50" height="50" />
+                    @foreach (var bullet in player.Bullets)
+                    {
+                        <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="yellow" />
+                    }
+                    @foreach (var bullet in alienBullets)
+                    {
+                        <circle cx="@bullet.X" cy="@bullet.Y" r="5" fill="red" />
+                    }
+                </svg>
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Display Score and Level at the bottom center -->
+        <div class="score-level-container">
+            <span>Score: @score | Level: @level</span>
+        </div>
+    </div>
+}
+
+@if (!gameRunning && !string.IsNullOrEmpty(gameOverMessage))
+{
+    <div class="page-container @pageAnimationClass">
+        <div class="game-over-overlay">
+            <div class="game-over">
+                <h2 style="text-align: center; font-family: 'Press Start 2P', cursive;">@gameOverMessage</h2>
+                <button class="btn btn-primary" @onclick="RestartGame" style="text-align: center; font-family: 'Press Start 2P', cursive;">Replay</button>
+                <button class="btn btn-secondary" @onclick="NavigateToHomePage" style="text-align: center; font-family: 'Press Start 2P', cursive;">Exit</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!gameRunning && gameOverMessage == "Game Finished!")
+{
+    <div class="page-container @pageAnimationClass">
+        <div class="game-over-overlay">
+            <div class="game-over">
+                <h2 style="text-align: center; font-family: 'Press Start 2P', cursive;">Game Finished!</h2>
+                <button class="btn btn-primary" @onclick="RestartGame" style="text-align: center; font-family: 'Press Start 2P', cursive;">Replay</button>
+                <button class="btn btn-secondary" @onclick="NavigateToHomePage" style="text-align: center; font-family: 'Press Start 2P', cursive;">Exit</button>
+            </div>
+        </div>
+    </div>
+}

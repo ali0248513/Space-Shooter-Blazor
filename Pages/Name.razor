@@ -1,0 +1,115 @@
+﻿@page "/"
+
+<PageTitle>User Name</PageTitle>
+
+@inject IJSRuntime JSRuntime
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+    private bool flashOverlayVisible = false;
+    private string userName = string.Empty;
+    private string pageAnimationClass = ""; // Controls the animation class
+
+    protected override void OnInitialized()
+    {
+        pageAnimationClass = "fade-in-up"; // Default animation when the page loads
+    }
+
+    private async Task Submit()
+    {
+        if (!string.IsNullOrEmpty(userName))
+        {
+            await SaveUsernameToLocalStorage(userName);
+            pageAnimationClass = "fade-in-up";
+            StateHasChanged();
+            await Task.Delay(300); // Wait for animation to complete
+            NavigationManager.NavigateTo("/Game");
+        }
+    }
+
+    private async Task SaveUsernameToLocalStorage(string userName)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "userName", userName);
+    }
+
+    private async Task LoadUsernameFromLocalStorage()
+    {
+        userName = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userName") ?? string.Empty;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {   
+        await LoadUsernameFromLocalStorage();
+    }
+
+    private void GoToScoresPage()
+    {
+        NavigationManager.NavigateTo("/Scores");
+    }
+
+    private void GoToCreatorsPage()
+    {
+        NavigationManager.NavigateTo("/Creators");
+    }
+
+
+}
+
+<div class="page-container @pageAnimationClass">
+    <div class="name-background-page" style="align-items: center; height: 100vh; flex-direction: column; display: flex;">
+        <img src="ufo2.png" alt="Icon" class="title-icon">
+        <h3 style="color: lime; text-align: center; font-family: 'Press Start 2P', cursive;">
+            Enter Name <InputText @bind-Value="userName" placeholder="Enter username" />
+            <button class="btn btn-primary" @onclick="Submit">Submit</button>
+        </h3>
+
+        <button class="btn btn-primary" @onclick="GoToScoresPage"
+                style="position: absolute; bottom: 10px; left: 10px; font-family: 'Press Start 2P', cursive;">
+            LeaderBoard
+        </button>
+
+        <button class="btn btn-primary" @onclick="GoToCreatorsPage"
+                style="position: absolute; bottom: 10px; right: 10px; font-family: 'Press Start 2P', cursive;">
+            Creators
+        </button>
+        <!-- Shooting Stars Container -->
+        <div class="shooting-stars">
+            <!-- Multiple star divs with randomized effects -->
+            <div class="star" style="top: 10%; left: 90%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+            <div class="star" style="top: 15%; left: 85%; animation-duration: 2.8s; animation-delay: 1s;"></div>
+            <div class="star" style="top: 30%; left: 80%; animation-duration: 2.2s; animation-delay: 0s;"></div>
+            <div class="star" style="top: 45%; left: 75%; animation-duration: 3.5s; animation-delay: 1.2s;"></div>
+            <div class="star" style="top: 55%; left: 70%; animation-duration: 3s; animation-delay: 2s;"></div>
+            <div class="star" style="top: 70%; left: 65%; animation-duration: 2.7s; animation-delay: 1.5s;"></div>
+            <div class="star" style="top: 80%; left: 60%; animation-duration: 2.4s; animation-delay: 1.8s;"></div>
+            <div class="star" style="top: 90%; left: 50%; animation-duration: 2.9s; animation-delay: 0.8s;"></div>
+            <div class="star" style="top: 40%; left: 55%; animation-duration: 3.2s; animation-delay: 2.4s;"></div>
+            <div class="star" style="top: 65%; left: 40%; animation-duration: 3.3s; animation-delay: 1.3s;"></div>
+            <div class="star" style="top: 10%; left: 15%; animation-duration: 3s;"></div>
+            <div class="star" style="top: 20%; left: 40%; animation-duration: 2.5s;"></div>
+            <div class="star" style="top: 50%; left: 70%; animation-duration: 4s;"></div>
+            <div class="star" style="top: 80%; left: 10%; animation-duration: 2s;"></div>
+            <div class="star" style="top: 60%; left: 30%; animation-duration: 3s;"></div>
+            <div class="star" style="top: 15%; left: 90%; animation-duration: 2s;"></div>
+            <!-- Add more stars as needed -->
+        </div>
+
+        <!-- Fixed Blinking Stars -->
+        <div class="fixed-star" style="top: 15%; left: 20%; animation-duration: 2s;"></div>
+        <div class="fixed-star" style="top: 30%; left: 30%; animation-duration: 2.5s;"></div>
+        <div class="fixed-star" style="top: 50%; left: 10%; animation-duration: 3s;"></div>
+        <div class="fixed-star" style="top: 65%; left: 45%; animation-duration: 2.3s;"></div>
+        <div class="fixed-star" style="top: 80%; left: 75%; animation-duration: 2s;"></div>
+        <div class="fixed-star" style="top: 25%; left: 60%; animation-duration: 1.8s;"></div>
+        <div class="fixed-star" style="top: 40%; left: 85%; animation-duration: 3.2s;"></div>
+        <div class="fixed-star" style="top: 10%; left: 50%; animation-duration: 3.5s;"></div>
+        <div class="fixed-star" style="top: 55%; left: 15%; animation-duration: 2.7s;"></div>
+        <div class="fixed-star" style="top: 75%; left: 55%; animation-duration: 3s;"></div>
+        <div class="fixed-star" style="top: 20%; left: 80%; animation-duration: 2.2s;"></div>
+        <div class="fixed-star" style="top: 10%; left: 25%; animation-duration: 2.9s;"></div>
+        <div class="fixed-star" style="top: 60%; left: 40%; animation-duration: 2.6s;"></div>
+        <div class="fixed-star" style="top: 50%; left: 70%; animation-duration: 2.4s;"></div>
+        <div class="fixed-star" style="top: 70%; left: 20%; animation-duration: 3.1s;"></div>
+    </div>
+</div>

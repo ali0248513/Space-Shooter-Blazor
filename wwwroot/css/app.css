@@ -1,0 +1,498 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.space-blue-bg {
+    background: black; /* Dark Space Blue to Black */
+    color: #06beb6; /* For text contrast */
+    height: 100vh; /* Full viewport height */
+    margin: 0; /* Remove extra space */
+}
+
+.game-container {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    height: 100vh; /* Full viewport height */
+    background-color: black; /* Set a dark background color for the game */
+}
+
+svg {
+    border: 2px solid green; /* Optional: Add a border around the game panel */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0;
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2;
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Loading");
+    }
+
+code {
+    color: #c02d76;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.name-background-page {
+    background-image: url('/space wallpapers/wallhaven-0j1rqw_1920x1080.png');
+    background-size: cover; /* Ensure it covers the entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Ensure the div fills the full height of the viewport */
+    width: 100%; /* Ensure the div spans the entire width */
+    overflow: hidden;
+    text-align: center; /* Ensure all text is centered */
+}
+
+
+.leaderboard-container {
+    background-image: url('/space wallpapers/wallhaven-0j1rqw_1920x1080.png');
+    background-size: cover; /* Make sure it covers the entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Change to start so content begins at the top */
+    padding: 20px; /* Add padding for space around the content */
+    min-height: 100vh; /* Ensure full height of the viewport */
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding doesn’t affect layout dimensions */
+}
+
+.menu {
+    background-image: url('/space wallpapers/wallhaven-0j1rqw_1920x1080.png');
+    background-size: cover; /* Make sure it covers the entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+    .menu button {
+        margin: 10px;
+        padding: 15px 30px;
+        background-color: limegreen;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+        .menu button:hover {
+            background-color: darkgreen;
+        }
+
+.score-level-container {
+    position: absolute; /* Change from fixed to absolute */
+    top: 125px; /* Position it near the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    color: white;
+    font-size: 18px;
+    font-family: 'Press Start 2P', cursive;
+    pointer-events: none; /* Ensures no interference with game interaction */
+    z-index: 1000; /* Ensure it stays above the game panel */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background for better readability */
+    padding: 5px 10px; /* Optional: Add padding for a cleaner look */
+    border-radius: 5px; /* Optional: Round the corners for a modern design */
+}
+
+.game-container {
+    background-image: url('/space wallpapers/wallhaven-0j1rqw_1920x1080.png');
+    background-size: cover; /* Make sure it covers the entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Add margin to lower the game panel */
+}
+
+
+
+.game-over-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Make the background darker to hide behind more effectively */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of all other content */
+}
+
+.game-over {
+    text-align: center;
+    color: white;
+    font-size: 40px; /* Increase the font size for better visibility */
+    font-family: 'Press Start 2P', cursive;
+    background-color: black;
+    padding: 80px; /* Increase padding for larger area */
+    border-radius: 15px; /* Make the corners more rounded */
+    width: 80%; /* Optionally, set a width percentage */
+    max-width: 600px; /* Optional: Max width to prevent it from getting too large */
+}
+
+    .game-over button {
+        margin-top: 20px;
+        padding: 15px 30px; /* Increase padding for better button size */
+        background-color: red;
+        border: none;
+        color: white;
+        font-size: 20px; /* Increase font size of the button */
+        cursor: pointer;
+        border-radius: 5px; /* Add rounded corners to button */
+    }
+
+        .game-over button:hover {
+            background-color: darkred;
+        }
+
+
+/* Ensure the background stars are behind the game content */
+/* Ensure the background stars are behind the game content */
+.game-container {
+    position: relative;
+    z-index: 2; /* Higher z-index to keep the game content in front */
+}
+
+/* Shooting stars */
+.shooting-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Stars behind the game content */
+}
+
+.star {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Trail glow effect */
+    animation: moveStar 3s linear infinite, trail 2.5s ease-out infinite; /* Faster animation */
+}
+
+/* Fixed stars */
+.fixed-star {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    animation: blink 2s infinite ease-in-out, trail 2.5s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 1;
+    z-index: 1; /* Stars behind the game content */
+}
+
+/* Keyframes for shooting stars */
+@keyframes moveStar {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+
+    100% {
+        transform: translateX(-100vw) translateY(100vh); /* Move diagonally to bottom-left */
+    }
+}
+
+/* Blinking effect for fixed stars */
+@keyframes blink {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* Trailing effect for stars */
+@keyframes trail {
+    0% {
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px rgba(255, 255, 255, 0.6); /* Longer trail */
+    }
+
+    100% {
+        box-shadow: 0 0 70px rgba(255, 255, 255, 1), 0 0 150px rgba(255, 255, 255, 0.8); /* Longer trail */
+    }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Fade In and Slide Up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card Fade In */
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-container.fade-in {
+    animation: fadeIn 300ms ease-in-out; /* Adjust to match the delay */
+}
+
+/* Scale on Hover */
+.theme-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Slide In from Left */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+.slide-in-from-left {
+    animation: slideInFromLeft 0.5s ease-in-out;
+}
+
+.Member {
+    display: flex;
+    border: 2px solid black;
+    border-radius: 25px;
+    align-items: center; /* Aligns content vertically */
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    background-color: black;
+    color: white;
+    box-shadow: 10px 10px 5px red;
+    padding: 10px; /* Add padding for spacing */
+}
+
+    .Member img {
+        width: 20%;
+        height: auto; /* Keep the aspect ratio intact */
+        border-radius: 25px;
+    }
+
+
+.Member-Container {
+    background-image: url('/space wallpapers/wallhaven-0j1rqw_1920x1080.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll; /* Add this line to enable vertical scrolling */
+}
+
+.Back-Button {
+    margin: 10px;
+    font-family: 'Press Start 2P', cursive;
+    padding: 10px 20px;
+    position: relative;
+}
+
+
+
+/* Apply Orbitron font to title for a futuristic feel */
+.space-shooter-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 64px;
+    font-weight: bold;
+    color: #004e92;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Moving stars/nebula effect */
+@keyframes moveBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Title icon styles */
+.title-icon {
+    width: 300px; /* Reduced size for better alignment */
+    height: 300px;
+    margin-bottom: 20px; /* Space between the icon and the heading */
+    animation: icon-bounce 1s ease-in-out infinite alternate;
+}
+
+/* Icon bounce animation */
+@keyframes icon-bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-10px); /* Adjust height for bounce effect */
+    }
+}
+
+.title-icon:hover {
+    animation: icon-bounce 0.5s ease-out infinite alternate;
+}
+
+
+
+

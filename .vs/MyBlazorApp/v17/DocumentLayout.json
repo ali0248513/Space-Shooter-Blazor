@@ -1,0 +1,134 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\pages\\creators.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:pages\\creators.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\pages\\game.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:pages\\game.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\pages\\name.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:pages\\name.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\pages\\scores.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:pages\\scores.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|c:\\users\\ali02\\onedrive\\desktop\\semester project visual programming\\myblazorapp\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{DD9DAAF3-B20B-482F-AA71-34C45D0D81A4}|MyBlazorApp.csproj|solutionrelative:wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "app.css",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\css\\app.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\app.css",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\css\\app.css",
+              "RelativeToolTip": "wwwroot\\css\\app.css",
+              "ViewState": "AgIAACoBAAAAAAAAAAAIwBcBAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-12-19T17:52:55.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Name.razor",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Name.razor",
+              "RelativeDocumentMoniker": "Pages\\Name.razor",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Name.razor",
+              "RelativeToolTip": "Pages\\Name.razor",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-20T13:06:33.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Creators.razor",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Creators.razor",
+              "RelativeDocumentMoniker": "Pages\\Creators.razor",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Creators.razor",
+              "RelativeToolTip": "Pages\\Creators.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T16:42:01.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Game.razor",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Game.razor",
+              "RelativeDocumentMoniker": "Pages\\Game.razor",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Game.razor",
+              "RelativeToolTip": "Pages\\Game.razor",
+              "ViewState": "AgIAAKEBAAAAAAAAAAAAACUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-19T17:05:28.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Scores.razor",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Scores.razor",
+              "RelativeDocumentMoniker": "Pages\\Scores.razor",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Pages\\Scores.razor",
+              "RelativeToolTip": "Pages\\Scores.razor",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAAAIAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-20T14:15:27.045Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-19T17:39:53.882Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "wwwroot\\index.html",
+              "ToolTip": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\index.html",
+              "RelativeToolTip": "wwwroot\\index.html",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-19T18:24:25.149Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

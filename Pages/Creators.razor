@@ -1,0 +1,98 @@
+﻿@page "/Creators"
+
+<div class="Member-Container @pageAnimationClass">
+    <h1 style="text-align: center; color:crimson; font-family: 'Press Start 2P';">Creators</h1>
+
+    <div class="Member">
+        <img style="width: 15%; height: auto; border-radius: 15px;" src="/edit/ghost1.png" alt="ghost1">
+        <p style="margin-left: 10px; font-size: 20pt;">
+            <b style="color: aqua;">Member 1</b><br><br>
+            <b>Name:</b> Ali Mustafa<br><b>Contact:</b> 032**********<br><b>Email:</b> ali0248513@gmail.com<br><br>
+            <b><s style="color: aqua;">Disclosed Info</s>:</b> CEO LuthorCorp.
+        </p>
+    </div>
+
+    <p>&nbsp;</p>
+    <hr style="width: 50%;">
+
+    <div class="Member">
+        <img style="width: 15%; height: auto; border-radius: 15px;" src="/edit/captainprice.png" alt="captainprice">
+        <p style="margin-left: 10px; font-size: 20pt;">
+            <b style="color: aqua;">Member 2</b><br><br>
+            <b>Name:</b> Muhammad Abdullah<br><b>Contact:</b> 032**********<br><b>Email:</b> muhammadAbdullah@gmail.com<br><br>
+            <b><s style="color: aqua;">Disclosed Info</s>:</b> Senior Developer at LutherCorp.
+        </p>
+    </div>
+
+
+    <p>&nbsp;</p>
+    <hr style="width: 50%;">
+
+    <button class="btn btn-primary" style="position: absolute;top: 10px; right: 10px; font-family: 'Press Start 2P';" @onclick="GoToNamePage">Back</button>
+
+    <p>&nbsp;</p>
+    <hr style="width: 50%;">
+    <p>&nbsp;</p>
+    <hr style="width: 50%;">
+</div>
+
+
+    <!-- Shooting Stars Container -->
+    <div class="shooting-stars">
+        <!-- Multiple star divs with randomized effects -->
+        <div class="star" style="top: 10%; left: 90%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="star" style="top: 15%; left: 85%; animation-duration: 2.8s; animation-delay: 1s;"></div>
+        <div class="star" style="top: 30%; left: 80%; animation-duration: 2.2s; animation-delay: 0s;"></div>
+        <div class="star" style="top: 45%; left: 75%; animation-duration: 3.5s; animation-delay: 1.2s;"></div>
+        <div class="star" style="top: 55%; left: 70%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="star" style="top: 70%; left: 65%; animation-duration: 2.7s; animation-delay: 1.5s;"></div>
+        <div class="star" style="top: 80%; left: 60%; animation-duration: 2.4s; animation-delay: 1.8s;"></div>
+        <div class="star" style="top: 90%; left: 50%; animation-duration: 2.9s; animation-delay: 0.8s;"></div>
+        <div class="star" style="top: 40%; left: 55%; animation-duration: 3.2s; animation-delay: 2.4s;"></div>
+        <div class="star" style="top: 65%; left: 40%; animation-duration: 3.3s; animation-delay: 1.3s;"></div>
+        <div class="star" style="top: 10%; left: 15%; animation-duration: 3s;"></div>
+        <div class="star" style="top: 20%; left: 40%; animation-duration: 2.5s;"></div>
+        <div class="star" style="top: 50%; left: 70%; animation-duration: 4s;"></div>
+        <div class="star" style="top: 80%; left: 10%; animation-duration: 2s;"></div>
+        <div class="star" style="top: 60%; left: 30%; animation-duration: 3s;"></div>
+        <div class="star" style="top: 15%; left: 90%; animation-duration: 2s;"></div>
+        <!-- Add more stars as needed -->
+    </div>
+
+    <!-- Fixed Blinking Stars -->
+    <div class="fixed-star" style="top: 15%; left: 20%; animation-duration: 2s;"></div>
+    <div class="fixed-star" style="top: 30%; left: 30%; animation-duration: 2.5s;"></div>
+    <div class="fixed-star" style="top: 50%; left: 10%; animation-duration: 3s;"></div>
+    <div class="fixed-star" style="top: 65%; left: 45%; animation-duration: 2.3s;"></div>
+    <div class="fixed-star" style="top: 80%; left: 75%; animation-duration: 2s;"></div>
+    <div class="fixed-star" style="top: 25%; left: 60%; animation-duration: 1.8s;"></div>
+    <div class="fixed-star" style="top: 40%; left: 85%; animation-duration: 3.2s;"></div>
+    <div class="fixed-star" style="top: 10%; left: 50%; animation-duration: 3.5s;"></div>
+    <div class="fixed-star" style="top: 55%; left: 15%; animation-duration: 2.7s;"></div>
+    <div class="fixed-star" style="top: 75%; left: 55%; animation-duration: 3s;"></div>
+    <div class="fixed-star" style="top: 20%; left: 80%; animation-duration: 2.2s;"></div>
+    <div class="fixed-star" style="top: 10%; left: 25%; animation-duration: 2.9s;"></div>
+    <div class="fixed-star" style="top: 60%; left: 40%; animation-duration: 2.6s;"></div>
+    <div class="fixed-star" style="top: 50%; left: 70%; animation-duration: 2.4s;"></div>
+    <div class="fixed-star" style="top: 70%; left: 20%; animation-duration: 3.1s;"></div>
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private string pageAnimationClass = ""; // Controls the animation class
+
+    protected override async Task OnInitializedAsync()
+    {
+        pageAnimationClass = "fade-in-up"; // Default animation when the page loads
+    }
+
+    private async Task GoToNamePage()
+    {
+        pageAnimationClass = "fade-in-down"; // Set transition class
+        StateHasChanged();
+        await Task.Delay(300); // Wait for the animation to complete
+        NavigationManager.NavigateTo("/");
+    }
+
+}

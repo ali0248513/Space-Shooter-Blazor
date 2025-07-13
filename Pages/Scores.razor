@@ -1,0 +1,199 @@
+﻿@page "/Scores"
+
+<PageTitle>Scores</PageTitle>
+
+@inject IJSRuntime JSRuntime
+
+
+
+<div class="leaderboard-container @pageAnimationClass">
+    <h3>Leaderboard</h3>
+
+    @if (scores.Any())
+    {
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var distinctScores = scores.GroupBy(s => new { s.Name, s.Score })
+                    .Select(g => g.First())
+                    .OrderByDescending(s => s.Score)
+                    .ToList();
+
+                    int rank = 1;
+                    int displayRank = 1;
+                    int? prevScore = null;
+
+                    foreach (var (name, score) in distinctScores)
+                    {
+                        if (prevScore.HasValue && score != prevScore.Value)
+                        {
+                            displayRank = rank;
+                        }
+
+                        <tr>
+                            <td>@displayRank</td>
+                            <td>@name</td>
+                            <td>@score</td>
+                        </tr>
+
+                        prevScore = score;
+                        rank++;
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No scores available.</p>
+    }
+
+    <button class="btn btn-primary back-button" @onclick="GoToNamePage">Back</button>
+    <button class="btn btn-danger clear-button" @onclick="ClearLocalStorage">Clear</button>
+</div>
+
+
+<div class="shooting-stars">
+    <!-- Multiple star divs with randomized effects -->
+    <div class="star" style="top: 10%; left: 90%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+    <div class="star" style="top: 15%; left: 85%; animation-duration: 2.8s; animation-delay: 1s;"></div>
+    <div class="star" style="top: 30%; left: 80%; animation-duration: 2.2s; animation-delay: 0s;"></div>
+    <div class="star" style="top: 45%; left: 75%; animation-duration: 3.5s; animation-delay: 1.2s;"></div>
+    <div class="star" style="top: 55%; left: 70%; animation-duration: 3s; animation-delay: 2s;"></div>
+    <div class="star" style="top: 70%; left: 65%; animation-duration: 2.7s; animation-delay: 1.5s;"></div>
+    <div class="star" style="top: 80%; left: 60%; animation-duration: 2.4s; animation-delay: 1.8s;"></div>
+    <div class="star" style="top: 90%; left: 50%; animation-duration: 2.9s; animation-delay: 0.8s;"></div>
+    <div class="star" style="top: 40%; left: 55%; animation-duration: 3.2s; animation-delay: 2.4s;"></div>
+    <div class="star" style="top: 65%; left: 40%; animation-duration: 3.3s; animation-delay: 1.3s;"></div>
+    <div class="star" style="top: 10%; left: 15%; animation-duration: 3s;"></div>
+    <div class="star" style="top: 20%; left: 40%; animation-duration: 2.5s;"></div>
+    <div class="star" style="top: 50%; left: 70%; animation-duration: 4s;"></div>
+    <div class="star" style="top: 80%; left: 10%; animation-duration: 2s;"></div>
+    <div class="star" style="top: 60%; left: 30%; animation-duration: 3s;"></div>
+    <div class="star" style="top: 15%; left: 90%; animation-duration: 2s;"></div>
+    <!-- Add more stars as needed -->
+</div>
+
+<!-- Fixed Blinking Stars -->
+<div class="fixed-star" style="top: 15%; left: 20%; animation-duration: 2s;"></div>
+<div class="fixed-star" style="top: 30%; left: 30%; animation-duration: 2.5s;"></div>
+<div class="fixed-star" style="top: 50%; left: 10%; animation-duration: 3s;"></div>
+<div class="fixed-star" style="top: 65%; left: 45%; animation-duration: 2.3s;"></div>
+<div class="fixed-star" style="top: 80%; left: 75%; animation-duration: 2s;"></div>
+<div class="fixed-star" style="top: 25%; left: 60%; animation-duration: 1.8s;"></div>
+<div class="fixed-star" style="top: 40%; left: 85%; animation-duration: 3.2s;"></div>
+<div class="fixed-star" style="top: 10%; left: 50%; animation-duration: 3.5s;"></div>
+<div class="fixed-star" style="top: 55%; left: 15%; animation-duration: 2.7s;"></div>
+<div class="fixed-star" style="top: 75%; left: 55%; animation-duration: 3s;"></div>
+<div class="fixed-star" style="top: 20%; left: 80%; animation-duration: 2.2s;"></div>
+<div class="fixed-star" style="top: 10%; left: 25%; animation-duration: 2.9s;"></div>
+<div class="fixed-star" style="top: 60%; left: 40%; animation-duration: 2.6s;"></div>
+<div class="fixed-star" style="top: 50%; left: 70%; animation-duration: 2.4s;"></div>
+<div class="fixed-star" style="top: 70%; left: 20%; animation-duration: 3.1s;"></div>
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private List<(string Name, int Score)> scores = new();
+    private string pageAnimationClass = ""; // Controls the animation class
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        pageAnimationClass = "fade-in-up"; // Default animation when the page loads
+        await LoadScoresFromLocalStorage();
+    }
+
+    private async Task ClearLocalStorage()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.clear");
+        scores.Clear();
+    }
+
+    private async Task LoadScoresFromLocalStorage()
+    {
+        var storedScores = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "scores");
+        if (!string.IsNullOrEmpty(storedScores))
+        {
+            scores = storedScores
+                .Split(',')
+                .Select(s =>
+                {
+                    var parts = s.Split(':');
+                    return (Name: parts[0], Score: int.Parse(parts[1]));
+                })
+                .ToList();
+        }
+    }
+
+    private async Task GoToNamePage()
+    {
+        pageAnimationClass = "fade-in-down"; // Set transition class
+        StateHasChanged();
+        await Task.Delay(300); // Wait for the animation to complete
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        background-size: cover;
+        font-family: 'Press Start 2P', cursive;
+        color: white;
+        overflow: auto; /* Allow scrolling */
+    }
+
+    h3 {
+        margin-bottom: 20px;
+    }
+
+    .score-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-family: "Audiowide", sans-serif;
+        color: white;
+        font-size: 60px; /* Increased font size for the table */
+    }
+
+        .score-table th, .score-table td {
+            border: 2px solid #1F6D87;
+            padding: 15px; /* Increased padding for better spacing */
+            text-align: center;
+            font-size: 1.2rem; /* Increased font size for better readability */
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; /* Green glowing effect */
+        }
+
+        .score-table th {
+            background-color: #2980B9;
+            font-size: 1.5rem; /* Increased font size for header */
+            text-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500, 0 0 30px #ff4500; /* Orange glow for headers */
+        }
+
+    .back-button, .clear-button {
+        margin: 10px;
+        font-family: 'Press Start 2P', cursive;
+        padding: 10px 20px;
+    }
+
+    .clear-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+
+    
+</style>

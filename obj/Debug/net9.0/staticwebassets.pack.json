@@ -1,0 +1,389 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\bin\\Debug\\net9.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\obj\\Debug\\net9.0\\scopedcss\\bundle\\MyBlazorApp.styles.css",
+      "PackagePath": "staticwebassets\\MyBlazorApp.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\Background.jpg",
+      "PackagePath": "staticwebassets\\Background.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\Music\\music.mp3",
+      "PackagePath": "staticwebassets\\Music\\music.mp3"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\alien.bmp",
+      "PackagePath": "staticwebassets\\alien.bmp"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\alien_no_bg.png",
+      "PackagePath": "staticwebassets\\alien_no_bg.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\astronaut-in-the-ocean.1920x1080.mp4",
+      "PackagePath": "staticwebassets\\astronaut-in-the-ocean.1920x1080.mp4"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\bg2.jpg",
+      "PackagePath": "staticwebassets\\bg2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\bg3.jpg",
+      "PackagePath": "staticwebassets\\bg3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\crown-solid.png",
+      "PackagePath": "staticwebassets\\crown-solid.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\edit\\Karakter-Call-of-Duty.png",
+      "PackagePath": "staticwebassets\\edit\\Karakter-Call-of-Duty.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\edit\\captainprice.png",
+      "PackagePath": "staticwebassets\\edit\\captainprice.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\edit\\ghost1.png",
+      "PackagePath": "staticwebassets\\edit\\ghost1.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\edit\\soap.png",
+      "PackagePath": "staticwebassets\\edit\\soap.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\edit\\soldier1.png",
+      "PackagePath": "staticwebassets\\edit\\soldier1.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\loading1.mp4",
+      "PackagePath": "staticwebassets\\loading1.mp4"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\music.mp3",
+      "PackagePath": "staticwebassets\\music.mp3"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\nebula.3840x2160.mp4",
+      "PackagePath": "staticwebassets\\nebula.3840x2160.mp4"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\ship.bmp",
+      "PackagePath": "staticwebassets\\ship.bmp"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\ship2.png",
+      "PackagePath": "staticwebassets\\ship2.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\site.css",
+      "PackagePath": "staticwebassets\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\Black Grey Illustrated Moon Space Astronaut Desktop Wallpaper.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\Black Grey Illustrated Moon Space Astronaut Desktop Wallpaper.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\Black Minimalist Galaxy Space Desktop Wallpaper.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\Black Minimalist Galaxy Space Desktop Wallpaper.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\Black Minimalist Illustrated Space Planets Desktop Wallpaper.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\Black Minimalist Illustrated Space Planets Desktop Wallpaper.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\simple-space-backgrounds-1920x1080-galaxy-dark-matter-26290.jpg",
+      "PackagePath": "staticwebassets\\space wallpapers\\simple-space-backgrounds-1920x1080-galaxy-dark-matter-26290.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\simple-space-backgrounds-1920x1080-galaxy-night-sky-26295.jpg",
+      "PackagePath": "staticwebassets\\space wallpapers\\simple-space-backgrounds-1920x1080-galaxy-night-sky-26295.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\simple-space-backgrounds-1920x1080-stars-galaxy-dark-matter-night-sky-26274.jpg",
+      "PackagePath": "staticwebassets\\space wallpapers\\simple-space-backgrounds-1920x1080-stars-galaxy-dark-matter-night-sky-26274.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\simple-space-backgrounds-1920x1080-stars-night-sky-26300.jpg",
+      "PackagePath": "staticwebassets\\space wallpapers\\simple-space-backgrounds-1920x1080-stars-night-sky-26300.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\space-1920x1080-stars-earth-25799.jpg",
+      "PackagePath": "staticwebassets\\space wallpapers\\space-1920x1080-stars-earth-25799.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-0j1rqw_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-0j1rqw_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-1kpz9v_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-1kpz9v_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-28vmq9_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-28vmq9_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-6kdrq7_1300x600.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-6kdrq7_1300x600.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-k9r1o6_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-k9r1o6_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-k9r1o6_2560x1440.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-k9r1o6_2560x1440.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-nmowj1_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-nmowj1_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-ox5rd7_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-ox5rd7_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-wq2r8p_1300x600.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-wq2r8p_1300x600.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-wq2r8p_1920x1080.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-wq2r8p_1920x1080.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\space wallpapers\\wallhaven-ymxpjg_2560x1440.png",
+      "PackagePath": "staticwebassets\\space wallpapers\\wallhaven-ymxpjg_2560x1440.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\ufo.png",
+      "PackagePath": "staticwebassets\\ufo.png"
+    },
+    {
+      "Id": "C:\\Users\\ali02\\OneDrive\\Desktop\\Semester project Visual Programming\\MyBlazorApp\\wwwroot\\ufo2.png",
+      "PackagePath": "staticwebassets\\ufo2.png"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MyBlazorApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MyBlazorApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.MyBlazorApp.props",
+      "PackagePath": "build\\MyBlazorApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.MyBlazorApp.props",
+      "PackagePath": "buildMultiTargeting\\MyBlazorApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.MyBlazorApp.props",
+      "PackagePath": "buildTransitive\\MyBlazorApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
